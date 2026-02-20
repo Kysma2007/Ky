@@ -2,10 +2,7 @@ FROM n8nio/n8n:latest
 
 USER root
 
-# Устанавливаем FFmpeg и нужные библиотеки
-RUN apt-get update && apt-get install -y \
-    ffmpeg \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Устанавливаем FFmpeg через apk (для Alpine)
+RUN apk add --no-cache ffmpeg
 
 USER node
