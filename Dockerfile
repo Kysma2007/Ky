@@ -1,11 +1,15 @@
-FROM n8nio/n8n:latest
+FROM node:20-alpine
 
-USER root
+# Устанавливаем FFmpeg
+RUN apk add --no-cache ffmpeg
 
-# Устанавливаем bash (на всякий случай)
-RUN apk add --no-cache bash || apt-get update && apt-get install -y ffmpeg
+# Устанавливаем n8n глобально
+RUN npm install -g n8n
 
-# Проверяем, что FFmpeg установился
-RUN ffmpeg -version || echo "FFmpeg not found"
+# Создаем пользователя node (как в оригинале)
+RUN addgroup -g 1000 -S node && adduser -u 1000 -S node -G node
 
 USER node
+
+# Запускаем n8n
+CMD ["n8n", "start"]
